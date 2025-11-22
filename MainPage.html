@@ -1,70 +1,614 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MainPage</title>
-    <style>
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: medium;
-        }
-        .header {
-            display: flex;
-            flex-direction: row;
-        }
-        .title {
-            margin-right: 10px;
-        }
-       /* .rightbar {
-            
-        }*/
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Language Exchange</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background-color: #f9fafb;
+    }
+
+    /* --- Header --- */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 40px;
+      background: white;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      position: sticky;
+      top: 0;
+    }
+
+    .header-left {
+      font-size: 22px;
+      font-weight: bold;
+      color: #4f46e5;
+      display: flex;
+      align-items: center;
+    }
+
+    .logo-text {
+      margin-right: 10px;
+    }
+
+    .menu-toggle {
+      border: none;
+      background: transparent;
+      font-size: 20px;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+
+    .menu-toggle:hover {
+      background-color: rgba(79, 70, 229, 0.1);
+    }
+    .side-panel {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 260px;
+      height: 100vh;
+      background-color: #ffffff;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.15);
+      transform: translateX(-100%);
+      transition: transform 0.25s ease-out;
+      z-index: 1000;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .side-panel.open {
+      transform: translateX(0);
+    }
+
+    .side-panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .side-close-btn {
+      border: none;
+      background: transparent;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .side-panel a {
+      text-decoration: none;
+      color: #111827;
+      padding: 8px 0;
+      border-bottom: 1px solid #e5e7eb;
+      font-size: 15px;
+    }
+
+    .side-panel a:last-child {
+      border-bottom: none;
+    }
+
+    .side-panel a:hover {
+      color: #4f46e5;
+    }
+    .side-panel a.active {
+      font-weight: bold;
+      color: #4f46e5;
+      border-left: 3px solid #4f46e5;
+      padding-left: 10px;
+      background-color: rgba(79, 70, 229, 0.06);
+    }
+
+    .search-bar input {
+      padding: 10px 16px;
+      border: 1px solid #ddd;
+      border-radius: 25px;
+      min-width: 280px;
+    }
+
+    .header-right button {
+      margin-left: 10px;
+      padding: 8px 14px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      background: white;
+      cursor: pointer;
+    }
+
+    .header-right {
+      position: relative;
+    }
+
+    .language-menu {
+      position: absolute;
+      right: 0;
+      top: 45px;
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      padding: 8px 0;
+      display: none;
+      min-width: 160px;
+      z-index: 1100;
+    }
+
+    .language-menu button {
+      width: 100%;
+      text-align: left;
+      padding: 8px 16px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .language-menu button:hover {
+      background-color: #f3f4f6;
+    }
+
+    /* --- Hero Section --- */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 80px 20px;
+      background: linear-gradient(120deg, #6366f1, #4f46e5);
+      color: white;
+    }
+
+    .hero h1 {
+      font-size: 42px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .hero input {
+      padding: 12px 18px;
+      width: 60%;
+      max-width: 550px;
+      border-radius: 30px;
+      border: none;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+
+    /* --- Category Section --- */
+    .category-section {
+      padding: 50px 40px;
+    }
+
+    .category-list {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .category-card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+      cursor: pointer;
+      transition: 0.25s;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .category-card:hover {
+      transform: translateY(-5px);
+    }
+
+    /* --- Tutors Display --- */
+    .tutors-section {
+      padding: 50px 40px;
+      background: #f3f4f6;
+    }
+
+    .tutor-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .tutor-card {
+      background: white;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+      transition: 0.2s;
+    }
+
+    .tutor-card:hover {
+      transform: translateY(-6px);
+    }
+
+    .tutor-photo {
+      width: 100%;
+      height: 180px;
+      border-radius: 12px;
+      background-color: #ddd;
+      margin-bottom: 12px;
+    }
+
+    /* --- Steps Section --- */
+    .steps {
+      padding: 60px 40px;
+      text-align: center;
+    }
+
+    .steps-container {
+      display: flex;
+      gap: 25px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 40px;
+    }
+
+    .step-card {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      width: 280px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    }
+
+    /* --- Footer --- */
+    footer {
+      background: #1f2937;
+      padding: 30px 40px;
+      color: white;
+      text-align: center;
+      margin-top: 40px;
+    }
+  </style>
 </head>
+
 <body>
-    <div class="header">
-        <div class="title">
-          <button class="AMode">
-            AMode
-          </button>
-        </div>
-        <div>
-            <input type="text" class="searchbar" placeholder="Search a Language">
-        </div>
-        <div class="rightbar">
-            <div class="languageselect">
-            English,USD
-            </div>
-            <button class="morelanguageselect">
-            &lt
-            </button>
-            <button class="questions">?</button>
-            <button class="log-in-out">
-            Log In
-            </button>
-        </div>
-    </div>
-    <div class="context">
-      <div class="tutors">
-        English tutors
-      </div>
-      <div class="tutors">
-        Spanish tutors
-      </div>
-      <div class="tutos">
-        Chinese tutors
-      </div>
-    </div>
-    <div class="work logic">
-      <div class="step step1">
 
-      </div>
-      <div class="step step2">
+  <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <button class="menu-toggle" id="menuToggle">☰</button>
+      <span class="logo-text">LanguageExchange</span>
+    </div>
+    <div class="header-right">
+      <button id="languageButton">English | USD</button>
+      <button>?</button>
+      <button>Log In</button>
 
-      </div>
-      <div class="step step3">
-        
+      <div class="language-menu" id="languageMenu">
+        <button data-lang="en">English</button>
+        <button data-lang="zh">简体中文</button>
+        <button data-lang="ar">العربية</button>
+        <button data-lang="es">Español</button>
+        <button data-lang="fr">Français</button>
       </div>
     </div>
+  </div>
+
+  <div class="side-panel" id="sidePanel">
+    <div class="side-panel-header">
+      <span id="sideMenuTitle">Menu</span>
+      <button class="side-close-btn" id="sideClose">×</button>
+    </div>
+    <a href="index.html" class="active" id="sideMenuHome">Home</a>
+    <a href="credits.html" id="sideMenuCredits">My Credits</a>
+    <a href="courses.html" id="sideMenuCourses">My Courses</a>
+    <a href="pricing.html" id="sideMenuPricing">Pricing</a>
+    <a href="help.html" id="sideMenuHelp">Help Center</a>
+  </div>
+
+  <!-- Hero -->
+  <div class="hero">
+    <h1 id="heroTitle">Find the language partner worldwide</h1>
+    <input id="heroSearchInput" type="text" placeholder="Try: English, Arabic, Spanish..." />
+  </div>
+
+  <!-- Categories -->
+  <div class="category-section">
+    <h2 id="popularCategoriesTitle">Popular Categories</h2>
+
+    <div class="category-list" id="categoryList"></div>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+    
+    const categoriesConfig = [
+      { key: 'english', link: 'english.html' },
+      { key: 'chinese', link: 'chinese.html' },
+      { key: 'arabic', link: 'arabic.html' },
+      { key: 'spanish', link: 'spanish.html' },
+      { key: 'french', link: 'french.html' }
+    ];
+
+    const translations = {
+      en: {
+        languageLabel: 'English | USD',
+        heroTitle: 'Find the language partner worldwide',
+        popularCategoriesTitle: 'Popular Categories',
+        howItWorksTitle: 'How It Works',
+        step1Title: '1. Find a Tutor',
+        step1Text: 'Browse thousands of verified tutors.',
+        step2Title: '2. Book a Lesson',
+        step2Text: 'Select your preferred time and price.',
+        step3Title: '3. Start Learning',
+        step3Text: 'Improve your language skills with live lessons.',
+        footerText: '© 2025 LanguageExchange — Learn Anywhere, Anytime.',
+        searchPlaceholder: 'Try: English, Arabic, Spanish...',
+        sideMenuTitle: 'Menu',
+        sideMenuHome: 'Home',
+        sideMenuCredits: 'My Credits',
+        sideMenuCourses: 'My Courses',
+        sideMenuPricing: 'Pricing',
+        sideMenuHelp: 'Help Center',
+        categories: {
+          english: 'English Tutors',
+          chinese: 'Chinese Tutors',
+          arabic: 'Arabic Tutors',
+          spanish: 'Spanish Tutors',
+          french: 'French Tutors'
+        }
+      },
+      zh: {
+        languageLabel: '中文 | CNY',
+        heroTitle: '在全球找到你的语伴',
+        popularCategoriesTitle: '热门类别',
+        howItWorksTitle: '使用方式',
+        step1Title: '1. 找到导师',
+        step1Text: '浏览成千上万名认证导师。',
+        step2Title: '2. 预约课程',
+        step2Text: '选择你喜欢的时间和价格。',
+        step3Title: '3. 开始学习',
+        step3Text: '通过实时课程提升你的语言能力。',
+        footerText: '© 2025 LanguageExchange — 随时随地学习。',
+        searchPlaceholder: '试试：英语、阿拉伯语、西班牙语……',
+        sideMenuTitle: '菜单',
+        sideMenuHome: '首页',
+        sideMenuCredits: '我的学分',
+        sideMenuCourses: '我的课程',
+        sideMenuPricing: '价格',
+        sideMenuHelp: '帮助中心',
+        categories: {
+          english: '英语导师',
+          chinese: '中文导师',
+          arabic: '阿拉伯语导师',
+          spanish: '西班牙语导师',
+          french: '法语导师'
+        }
+      },
+      es: {
+        languageLabel: 'Español | EUR',
+        heroTitle: 'Encuentra compañeros de idioma en todo el mundo',
+        popularCategoriesTitle: 'Categorías populares',
+        howItWorksTitle: 'Cómo funciona',
+        step1Title: '1. Encuentra un tutor',
+        step1Text: 'Explora miles de tutores verificados.',
+        step2Title: '2. Reserva una clase',
+        step2Text: 'Elige tu horario y precio preferidos.',
+        step3Title: '3. Empieza a aprender',
+        step3Text: 'Mejora tu idioma con clases en vivo.',
+        footerText: '© 2025 LanguageExchange — Aprende en cualquier momento y lugar.',
+        searchPlaceholder: 'Prueba: inglés, árabe, español…',
+        sideMenuTitle: 'Menú',
+        sideMenuHome: 'Inicio',
+        sideMenuCredits: 'Mis créditos',
+        sideMenuCourses: 'Mis cursos',
+        sideMenuPricing: 'Precios',
+        sideMenuHelp: 'Centro de ayuda',
+        categories: {
+          english: 'Profesores de inglés',
+          chinese: 'Profesores de chino',
+          arabic: 'Profesores de árabe',
+          spanish: 'Profesores de español',
+          french: 'Profesores de francés'
+        }
+      },
+      ar: {
+        languageLabel: 'العربية | SAR',
+        heroTitle: 'اعثر على شريكك اللغوي حول العالم',
+        popularCategoriesTitle: 'الفئات الشائعة',
+        howItWorksTitle: 'كيفية الاستخدام',
+        step1Title: '1. ابحث عن مدرس',
+        step1Text: 'تصفَّح آلاف المدرّسين المعتمدين.',
+        step2Title: '2. احجز درسًا',
+        step2Text: 'اختر الوقت والسعر المناسبين لك.',
+        step3Title: '3. ابدأ التعلّم',
+        step3Text: 'طوِّر مهاراتك اللغوية من خلال دروس مباشرة.',
+        footerText: '© 2025 ‏LanguageExchange — تعلّم في أي وقت ومن أي مكان.',
+        searchPlaceholder: 'جرّب: الإنجليزية، العربية، الإسبانية…',
+        sideMenuTitle: 'القائمة',
+        sideMenuHome: 'الرئيسية',
+        sideMenuCredits: 'أرصدتي',
+        sideMenuCourses: 'دوراتي',
+        sideMenuPricing: 'الأسعار',
+        sideMenuHelp: 'مركز المساعدة',
+        categories: {
+          english: 'مدرّسو الإنجليزية',
+          chinese: 'مدرّسو الصينية',
+          arabic: 'مدرّسو العربية',
+          spanish: 'مدرّسو الإسبانية',
+          french: 'مدرّسو الفرنسية'
+        }
+      },
+      fr: {
+        languageLabel: 'Français | EUR',
+        heroTitle: 'Trouvez votre partenaire de langue partout dans le monde',
+        popularCategoriesTitle: 'Catégories populaires',
+        howItWorksTitle: 'Comment ça marche',
+        step1Title: '1. Trouver un tuteur',
+        step1Text: 'Parcourez des milliers de tuteurs vérifiés.',
+        step2Title: '2. Réserver un cours',
+        step2Text: 'Choisissez votre horaire et votre tarif préférés.',
+        step3Title: '3. Commencer à apprendre',
+        step3Text: 'Améliorez votre niveau de langue avec des cours en direct.',
+        footerText: '© 2025 LanguageExchange — Apprenez où vous voulez, quand vous voulez.',
+        searchPlaceholder: 'Essayez : anglais, arabe, espagnol…',
+        sideMenuTitle: 'Menu',
+        sideMenuHome: 'Accueil',
+        sideMenuCredits: 'Mes crédits',
+        sideMenuCourses: 'Mes cours',
+        sideMenuPricing: 'Tarifs',
+        sideMenuHelp: 'Centre d\'aide',
+        categories: {
+          english: 'Professeurs d\'anglais',
+          chinese: 'Professeurs de chinois',
+          arabic: 'Professeurs d\'arabe',
+          spanish: 'Professeurs d\'espagnol',
+          french: 'Professeurs de français'
+        }
+      }
+    };
+
+    function applyLanguage(lang) {
+      const t = translations[lang] || translations.en;
+
+      document.documentElement.lang = lang === 'zh' ? 'zh-Hans' : lang;
+      document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+
+      const heroTitleEl = document.getElementById('heroTitle');
+      const heroInputEl = document.getElementById('heroSearchInput');
+      const popularTitleEl = document.getElementById('popularCategoriesTitle');
+      const howItWorksEl = document.getElementById('howItWorksTitle');
+      const step1TitleEl = document.getElementById('step1Title');
+      const step1TextEl = document.getElementById('step1Text');
+      const step2TitleEl = document.getElementById('step2Title');
+      const step2TextEl = document.getElementById('step2Text');
+      const step3TitleEl = document.getElementById('step3Title');
+      const step3TextEl = document.getElementById('step3Text');
+      const footerEl = document.getElementById('footerText');
+      const languageButtonEl = document.getElementById('languageButton');
+      const sideMenuTitleEl = document.getElementById('sideMenuTitle');
+      const sideMenuHomeEl = document.getElementById('sideMenuHome');
+      const sideMenuCreditsEl = document.getElementById('sideMenuCredits');
+      const sideMenuCoursesEl = document.getElementById('sideMenuCourses');
+      const sideMenuPricingEl = document.getElementById('sideMenuPricing');
+      const sideMenuHelpEl = document.getElementById('sideMenuHelp');
+
+      if (heroTitleEl) heroTitleEl.textContent = t.heroTitle;
+      if (heroInputEl && t.searchPlaceholder) heroInputEl.placeholder = t.searchPlaceholder;
+      if (popularTitleEl) popularTitleEl.textContent = t.popularCategoriesTitle;
+      if (howItWorksEl) howItWorksEl.textContent = t.howItWorksTitle;
+      if (step1TitleEl) step1TitleEl.textContent = t.step1Title;
+      if (step1TextEl) step1TextEl.textContent = t.step1Text;
+      if (step2TitleEl) step2TitleEl.textContent = t.step2Title;
+      if (step2TextEl) step2TextEl.textContent = t.step2Text;
+      if (step3TitleEl) step3TitleEl.textContent = t.step3Title;
+      if (step3TextEl) step3TextEl.textContent = t.step3Text;
+      if (footerEl) footerEl.textContent = t.footerText;
+      if (languageButtonEl) languageButtonEl.textContent = t.languageLabel;
+      if (sideMenuTitleEl && t.sideMenuTitle) sideMenuTitleEl.textContent = t.sideMenuTitle;
+      if (sideMenuHomeEl && t.sideMenuHome) sideMenuHomeEl.textContent = t.sideMenuHome;
+      if (sideMenuCreditsEl && t.sideMenuCredits) sideMenuCreditsEl.textContent = t.sideMenuCredits;
+      if (sideMenuCoursesEl && t.sideMenuCourses) sideMenuCoursesEl.textContent = t.sideMenuCourses;
+      if (sideMenuPricingEl && t.sideMenuPricing) sideMenuPricingEl.textContent = t.sideMenuPricing;
+      if (sideMenuHelpEl && t.sideMenuHelp) sideMenuHelpEl.textContent = t.sideMenuHelp;
+
+      renderCategories(lang);
+    }
+
+    function renderCategories(lang) {
+      const t = translations[lang] || translations.en;
+      const names = t.categories || translations.en.categories;
+
+      if (!list) return;
+
+      list.innerHTML = '';
+
+      categoriesConfig.forEach(cat => {
+        const a = document.createElement("a");
+        a.href = cat.link;
+        a.className = "category-card";
+        a.textContent = names[cat.key] || cat.key;
+        list.appendChild(a);
+      });
+    }
+
+    const list = document.getElementById("categoryList");
+    const sidePanel = document.getElementById("sidePanel");
+    const menuToggle = document.getElementById("menuToggle");
+    const sideClose = document.getElementById("sideClose");
+    const languageMenu = document.getElementById("languageMenu");
+    const languageButton = document.getElementById("languageButton");
+
+    if (languageButton && languageMenu) {
+      languageButton.addEventListener("click", () => {
+        if (languageMenu.style.display === "block") {
+          languageMenu.style.display = "none";
+        } else {
+          languageMenu.style.display = "block";
+        }
+      });
+
+      languageMenu.addEventListener("click", (event) => {
+        const target = event.target;
+        if (target.matches('button[data-lang]')) {
+          const selectedLang = target.getAttribute('data-lang');
+          const url = new URL(window.location.href);
+          url.searchParams.set('lang', selectedLang);
+          window.location.href = url.toString();
+          languageMenu.style.display = "none";
+        }
+      });
+    }
+
+    // Set initial language based on URL (fallback to English)
+    const params = new URLSearchParams(window.location.search);
+    const initialLang = params.get('lang') || 'en';
+    applyLanguage(initialLang);
+
+    if (menuToggle && sidePanel && sideClose) {
+      menuToggle.addEventListener("click", () => {
+        sidePanel.classList.toggle("open");
+      });
+
+      sideClose.addEventListener("click", () => {
+        sidePanel.classList.remove("open");
+      });
+    }
+  });
+  </script>
+
+  <!-- Tutors -->
+
+  <!-- Steps -->
+  <div class="steps">
+    <h2 id="howItWorksTitle">How It Works</h2>
+
+    <div class="steps-container">
+      <div class="step-card">
+        <h3 id="step1Title">1. Find a Tutor</h3>
+        <p id="step1Text">Browse thousands of verified tutors.</p>
+      </div>
+
+      <div class="step-card">
+        <h3 id="step2Title">2. Book a Lesson</h3>
+        <p id="step2Text">Select your preferred time and price.</p>
+      </div>
+
+      <div class="step-card">
+        <h3 id="step3Title">3. Start Learning</h3>
+        <p id="step3Text">Improve your language skills with live lessons.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer id="footerText">
+    © 2025 LanguageExchange — Learn Anywhere, Anytime.
+  </footer>
+
 </body>
 </html>

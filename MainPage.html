@@ -156,6 +156,34 @@
       background-color: #f3f4f6;
     }
 
+    .currency-menu {
+      position: absolute;
+      right: 0;
+      top: 45px;
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      padding: 8px 0;
+      display: none;
+      min-width: 160px;
+      z-index: 1100;
+    }
+
+    .currency-menu button {
+      width: 100%;
+      text-align: left;
+      padding: 8px 16px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .currency-menu button:hover {
+      background-color: #f3f4f6;
+    }
+
     /* --- Hero Section --- */
     .hero {
       display: flex;
@@ -285,9 +313,10 @@
       <span class="logo-text">LanguageExchange</span>
     </div>
     <div class="header-right">
-      <button id="languageButton">English | USD</button>
-      <button>?</button>
-      <button>Log In</button>
+      <button id="languageButton">English</button>
+      <button id="currencyButton">USD</button>
+      
+      <button id="loginButton">Log In</button>
 
       <div class="language-menu" id="languageMenu">
         <button data-lang="en">English</button>
@@ -295,6 +324,13 @@
         <button data-lang="ar">العربية</button>
         <button data-lang="es">Español</button>
         <button data-lang="fr">Français</button>
+      </div>
+
+      <div class="currency-menu" id="currencyMenu">
+        <button data-currency="USD">USD</button>
+        <button data-currency="CNY">CNY</button>
+        <button data-currency="EUR">EUR</button>
+        <button data-currency="SAR">SAR</button>
       </div>
     </div>
   </div>
@@ -336,7 +372,9 @@
 
     const translations = {
       en: {
-        languageLabel: 'English | USD',
+        languageLabel: 'English',
+        currencyLabel: 'USD',
+        loginLabel: 'Log In',
         heroTitle: 'Find the language partner worldwide',
         popularCategoriesTitle: 'Popular Categories',
         howItWorksTitle: 'How It Works',
@@ -363,7 +401,9 @@
         }
       },
       zh: {
-        languageLabel: '中文 | CNY',
+        languageLabel: '中文',
+        currencyLabel: 'CNY',
+        loginLabel: '登录',
         heroTitle: '在全球找到你的语伴',
         popularCategoriesTitle: '热门类别',
         howItWorksTitle: '使用方式',
@@ -390,7 +430,9 @@
         }
       },
       es: {
-        languageLabel: 'Español | EUR',
+        languageLabel: 'Español',
+        currencyLabel: 'EUR',
+        loginLabel: 'Iniciar sesión',
         heroTitle: 'Encuentra compañeros de idioma en todo el mundo',
         popularCategoriesTitle: 'Categorías populares',
         howItWorksTitle: 'Cómo funciona',
@@ -417,7 +459,9 @@
         }
       },
       ar: {
-        languageLabel: 'العربية | SAR',
+        languageLabel: 'العربية',
+        currencyLabel: 'SAR',
+        loginLabel: 'تسجيل الدخول',
         heroTitle: 'اعثر على شريكك اللغوي حول العالم',
         popularCategoriesTitle: 'الفئات الشائعة',
         howItWorksTitle: 'كيفية الاستخدام',
@@ -444,7 +488,9 @@
         }
       },
       fr: {
-        languageLabel: 'Français | EUR',
+        languageLabel: 'Français',
+        currencyLabel: 'EUR',
+        loginLabel: 'Se connecter',
         heroTitle: 'Trouvez votre partenaire de langue partout dans le monde',
         popularCategoriesTitle: 'Catégories populaires',
         howItWorksTitle: 'Comment ça marche',
@@ -490,6 +536,8 @@
       const step3TextEl = document.getElementById('step3Text');
       const footerEl = document.getElementById('footerText');
       const languageButtonEl = document.getElementById('languageButton');
+      const currencyButtonEl = document.getElementById('currencyButton');
+      const loginButtonEl = document.getElementById('loginButton');
       const sideMenuTitleEl = document.getElementById('sideMenuTitle');
       const sideMenuHomeEl = document.getElementById('sideMenuHome');
       const sideMenuCreditsEl = document.getElementById('sideMenuCredits');
@@ -509,6 +557,8 @@
       if (step3TextEl) step3TextEl.textContent = t.step3Text;
       if (footerEl) footerEl.textContent = t.footerText;
       if (languageButtonEl) languageButtonEl.textContent = t.languageLabel;
+      if (currencyButtonEl && t.currencyLabel) currencyButtonEl.textContent = t.currencyLabel;
+      if (loginButtonEl && t.loginLabel) loginButtonEl.textContent = t.loginLabel;
       if (sideMenuTitleEl && t.sideMenuTitle) sideMenuTitleEl.textContent = t.sideMenuTitle;
       if (sideMenuHomeEl && t.sideMenuHome) sideMenuHomeEl.textContent = t.sideMenuHome;
       if (sideMenuCreditsEl && t.sideMenuCredits) sideMenuCreditsEl.textContent = t.sideMenuCredits;
@@ -542,6 +592,8 @@
     const sideClose = document.getElementById("sideClose");
     const languageMenu = document.getElementById("languageMenu");
     const languageButton = document.getElementById("languageButton");
+    const currencyMenu = document.getElementById("currencyMenu");
+    const currencyButton = document.getElementById("currencyButton");
 
     if (languageButton && languageMenu) {
       languageButton.addEventListener("click", () => {
@@ -560,6 +612,26 @@
           url.searchParams.set('lang', selectedLang);
           window.location.href = url.toString();
           languageMenu.style.display = "none";
+        }
+      });
+    }
+
+    if (currencyButton && currencyMenu) {
+      currencyButton.addEventListener("click", () => {
+        if (currencyMenu.style.display === "block") {
+          currencyMenu.style.display = "none";
+        } else {
+          currencyMenu.style.display = "block";
+        }
+      });
+
+      currencyMenu.addEventListener("click", (event) => {
+        const target = event.target;
+        if (target.matches('button[data-currency]')) {
+          const selectedCurrency = target.getAttribute('data-currency');
+          currencyButton.textContent = selectedCurrency;
+          currencyMenu.style.display = "none";
+          // Here you could later trigger price updates based on selectedCurrency
         }
       });
     }

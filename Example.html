@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LanguageExchange - Match</title>
+  <link rel="stylesheet" href="base.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f3f4f6;
+    }
+
+    .page {
+      padding: 24px 16px;
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+    }
+
+    .match-column {
+      max-width: 420px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .user-card {
+      width: 100%;
+      background: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(15,23,42,0.18);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .user-card-header {
+      position: relative;
+      height: 260px;
+      background: #ddd;
+    }
+
+    .user-card-header img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .user-card-chip {
+      position: absolute;
+      left: 14px;
+      bottom: 14px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      background: rgba(15,23,42,0.85);
+      color: #f9fafb;
+    }
+
+    .user-card-body {
+      padding: 16px 18px 14px;
+    }
+
+    .user-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .user-name {
+      font-weight: 600;
+      font-size: 18px;
+      color: #111827;
+    }
+
+    .user-meta {
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    .language-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .badge {
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: #f3f4f6;
+      color: #111827;
+    }
+
+    .badge-teach {
+      background: #ffefe9;
+      color: #b91c1c;
+    }
+
+    .badge-learn {
+      background: #e0f2fe;
+      color: #075985;
+    }
+
+    .user-bio {
+      font-size: 13px;
+      color: #4b5563;
+      line-height: 1.4;
+      margin-bottom: 10px;
+    }
+
+    .match-score {
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    .swipe-actions {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      margin-top: 14px;
+      margin-bottom: 10px;
+    }
+
+    .swipe-btn {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      box-shadow: 0 6px 16px rgba(15,23,42,0.16);
+      background: #ffffff;
+    }
+
+    .swipe-btn.skip {
+      color: #ef4444;
+    }
+
+    .swipe-btn.chat {
+      font-size: 20px;
+      color: #4b5563;
+    }
+
+    .swipe-btn.like {
+      color: #16a34a;
+    }
+
+    .sidebar {
+      width: 320px;
+      max-width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .panel {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 4px 14px rgba(15,23,42,0.1);
+    }
+
+    .panel-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #111827;
+    }
+
+    .panel p {
+      font-size: 13px;
+      color: #4b5563;
+      margin: 4px 0;
+    }
+  </style>
+</head>
+<body>
+  <!-- 复用你已经有的 header + side-panel -->
+  <div class="header">
+    <div class="header-left">
+      <button class="menu-toggle" id="menuToggle">☰</button>
+      <span class="logo-text">LanguageExchange</span>
+    </div>
+    <div class="header-right">
+      <button id="languageButton">English</button>
+      <button id="currencyButton">USD</button>
+      <button id="loginButton">Log In</button>
+      <!-- 略: languageMenu / currencyMenu，同你现有代码 -->
+    </div>
+  </div>
+
+  <!-- 页面主体 -->
+  <div class="page">
+    <div class="match-column">
+      <div class="user-card">
+        <div class="user-card-header">
+          <img src="https://via.placeholder.com/600x400.png?text=User" alt="Partner">
+          <div class="user-card-chip">Perfect language match</div>
+        </div>
+        <div class="user-card-body">
+          <div class="user-card-top">
+            <div>
+              <div class="user-name">Mina · 26</div>
+              <div class="user-meta">Seoul · GMT+9 · Online now</div>
+            </div>
+            <div class="user-meta">Match 92%</div>
+          </div>
+
+          <div class="language-badges">
+            <span class="badge badge-teach">Can teach: Korean (Native)</span>
+            <span class="badge badge-teach">Can teach: English (B2)</span>
+            <span class="badge badge-learn">Wants to learn: Chinese (A2)</span>
+          </div>
+
+          <p class="user-bio">
+            I love slow conversation, coffee chats, and language swaps.  
+            Let’s do 25 min Korean ☕ + 25 min Chinese ☕.
+          </p>
+
+          <div class="match-score">
+            You can teach: <strong>Chinese (B2)</strong> · She can teach: <strong>Korean (Native)</strong>
+          </div>
+
+          <div class="swipe-actions">
+            <button class="swipe-btn skip">✕</button>
+            <button class="swipe-btn chat">💬</button>
+            <button class="swipe-btn like">❤</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 后续可以用 JS 堆多张卡做 swipe stack -->
+    </div>
+
+    <div class="sidebar">
+      <div class="panel">
+        <div class="panel-title">You can teach</div>
+        <p>Chinese (Native), English (C1)</p>
+      </div>
+      <div class="panel">
+        <div class="panel-title">You want to learn</div>
+        <p>Korean (A2), Italian (A1)</p>
+      </div>
+      <div class="panel">
+        <div class="panel-title">Matching rules</div>
+        <p>We match people who <strong>can teach what you learn</strong> and <strong>want to learn what you can teach</strong>.</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

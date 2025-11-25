@@ -185,7 +185,7 @@
         }
 
         .teacher-list {
-            width: 700px;
+            width: 746px;
             max-width: 100%;
             display: flex;
             flex-direction: column;
@@ -202,6 +202,11 @@
             box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
             cursor: pointer;
             transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+            justify-content: space-between;
+            gap: 16px;
+            width: 746px;
+            height: 312px;
+            box-sizing: border-box;
         }
 
         .teacher-card:hover {
@@ -233,6 +238,39 @@
             gap: 6px;
         }
 
+        .teacher-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .teacher-languages {
+            font-size: 14px;
+            font-weight: 600;
+            color: #111827;
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.5;
+            align-items: flex-start;
+            width: 100%;
+             margin-top: auto;
+            gap: 8px;
+            justify-content: flex-end;
+            width: 100%;
+            flex-wrap: nowrap;
+        }
+
+        .teacher-side {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: flex-end;
+            min-width: 140px;
+            gap: 8px;
+        }
+
         .teacher-header {
             display: flex;
             justify-content: space-between;
@@ -246,6 +284,22 @@
             color: #111827;
         }
 
+        .level-bar {
+            display: flex;
+            gap: 3px;
+            margin-top: 4px;
+        }
+
+        .capsule {
+            width: 10px;
+            height: 6px;
+            background: #e5e7eb;
+            border-radius: 999px;
+        }
+        .capsule.active {
+            background: #FF6347;
+        }
+
         .teacher-meta {
             font-size: 12px;
             color: #6b7280;
@@ -253,7 +307,7 @@
         }
 
         .teacher-price {
-            text-align: right;
+            text-align: center;
             font-weight: 600;
             font-size: 15px;
             color: #111827;
@@ -302,17 +356,42 @@
             line-height: 1.4;
         }
 
+
+        .teacher-languages-row {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 8px;
+            width: 180px;
+        }
+
+        .flag-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #ffffff;
+            font-size: 18px;
+            box-shadow: 0 0 4px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+
         .teacher-actions {
             margin-top: 8px;
             display: flex;
+            flex-direction: column;
             gap: 8px;
-            flex-wrap: wrap;
+            justify-content: flex-end;
+            align-items: flex-end;
+            width: 100%;
+            flex-wrap: nowrap;
         }
 
         .btn-primary,
         .btn-secondary {
             font-size: 12px;
-            padding: 6px 12px;
             border-radius: 999px;
             border: 1px solid transparent;
             outline: none;
@@ -322,6 +401,8 @@
             background: #FF6347;
             color: #ffffff;
             border-color: #FF6347;
+            width: 180px;
+            height: 40px;
         }
 
         .btn-primary:hover {
@@ -333,6 +414,8 @@
             background: #ffffff;
             color: #111827;
             border-color: #d1d5db;
+            width: 180px;
+            height: 40px;
         }
 
         .btn-secondary:hover {
@@ -387,27 +470,48 @@
             <div class="teacher-avatar">
                 <img src="https://via.placeholder.com/128x128.png?text=T1" alt="Teacher 1">
             </div>
-            <div class="teacher-content">
+            <div class="teacher-info">
                 <div class="teacher-header">
                     <div>
                         <div class="teacher-name">Sarah M.</div>
+                        <div class="level-bar">
+                            <div class="capsule active"></div>
+                            <div class="capsule active"></div>
+                            <div class="capsule active"></div>
+                            <div class="capsule active"></div>
+                            <div class="capsule"></div>
+                            <div class="capsule"></div>
+                            <div class="capsule"></div>
+                            <div class="capsule"></div>
+                            <div class="capsule"></div>
+                            <div class="capsule"></div>
+                        </div>
                         <div class="teacher-rating">
                             <span class="stars">★★★★★</span>
                             <span>4.9 · 120 条评价 · 560 节已授课程</span>
                         </div>
                     </div>
-                    <div class="teacher-price">
-                        $18
-                        <span>/ 小时</span>
-                    </div>
                 </div>
-
-                
-
                 <p class="teacher-desc">
                     你好！我是 Sarah，擅长帮助学生在轻松的对话中自然开口。课程以真实场景为主，让你敢说、会说、说得地道。
                 </p>
-
+                <div class="teacher-languages">
+                    <div class="teacher-languages-row">
+                        <span>沟通语言：</span>
+                        <span class="flag-icon">🇺🇸</span>
+                        <span class="flag-icon">🇨🇳</span>
+                    </div>
+                    <div class="teacher-languages-row">
+                        <span>教学语言：</span>
+                        <span class="flag-icon">🇺🇸</span>
+                    </div>
+                </div>
+            </div>
+            <div class="teacher-side">
+                <div class="teacher-price">
+                    $18
+                    <span>/ 小时</span>
+                </div>
                 <div class="teacher-actions">
                     <button class="btn-primary">预约试听</button>
                     <button class="btn-secondary">发送消息</button>
@@ -419,27 +523,48 @@
             <div class="teacher-avatar">
                 <img src="https://via.placeholder.com/128x128.png?text=T2" alt="Teacher 2">
             </div>
-            <div class="teacher-content">
+            <div class="teacher-info">
                 <div class="teacher-header">
                     <div>
                         <div class="teacher-name">Daniel K.</div>
+                        <div class="level-bar">
+                            <div class="capsule active"></div>
+                            <div class="capsule active"></div>
+                            <div class="capsule active"></div>
+                            <div class="capsule active"></div>
+                            <div class="capsule"></div>
+                            <div class="capsule"></div>
+                            <div class="capsule"></div>
+                            <div class="capsule"></div>
+                            <div class="capsule"></div>
+                            <div class="capsule"></div>
+                        </div>
                         <div class="teacher-rating">
                             <span class="stars">★★★★☆</span>
                             <span>4.8 · 89 条评价 · 430 节已授课程</span>
                         </div>
                     </div>
-                    <div class="teacher-price">
-                        $22
-                        <span>/ 小时</span>
-                    </div>
                 </div>
-
-              
-
                 <p class="teacher-desc">
                     如果你正在准备托福或雅思考试，我可以帮你系统梳理听说读写的提升策略，并针对性讲解高频考点。
                 </p>
-
+                <div class="teacher-languages">
+                    <div class="teacher-languages-row">
+                        <span>沟通语言：</span>
+                        <span class="flag-icon">🇺🇸</span>
+                        <span class="flag-icon">🇨🇳</span>
+                    </div>
+                    <div class="teacher-languages-row">
+                        <span>教学语言：</span>
+                        <span class="flag-icon">🇺🇸</span>
+                    </div>
+                </div>
+            </div>
+            <div class="teacher-side">
+                <div class="teacher-price">
+                    $22
+                    <span>/ 小时</span>
+                </div>
                 <div class="teacher-actions">
                     <button class="btn-primary">预约试听</button>
                     <button class="btn-secondary">发送消息</button>
@@ -451,27 +576,48 @@
             <div class="teacher-avatar">
                 <img src="https://via.placeholder.com/128x128.png?text=T3" alt="Teacher 3">
             </div>
-            <div class="teacher-content">
+            <div class="teacher-info">
                 <div class="teacher-header">
                     <div>
                         <div class="teacher-name">Emily C.</div>
+                        <div class="level-bar">
+                            <div class="capsule active"></div>
+                            <div class="capsule active"></div>
+                            <div class="capsule active"></div>
+                            <div class="capsule active"></div>
+                            <div class="capsule"></div>
+                            <div class="capsule"></div>
+                            <div class="capsule"></div>
+                            <div class="capsule"></div>
+                            <div class="capsule"></div>
+                            <div class="capsule"></div>
+                        </div>
                         <div class="teacher-rating">
                             <span class="stars">★★★★★</span>
                             <span>5.0 · 65 条评价 · 300 节已授课程</span>
                         </div>
                     </div>
-                    <div class="teacher-price">
-                        $15
-                        <span>/ 小时</span>
-                    </div>
                 </div>
-
-             
-
                 <p class="teacher-desc">
                     害怕开口？从简单的单词和句子开始，我会用很多图片和游戏，帮你一步步建立自信和语感。
                 </p>
-
+                <div class="teacher-languages">
+                    <div class="teacher-languages-row">
+                        <span>沟通语言：</span>
+                        <span class="flag-icon">🇺🇸</span>
+                        <span class="flag-icon">🇨🇳</span>
+                    </div>
+                    <div class="teacher-languages-row">
+                        <span>教学语言：</span>
+                        <span class="flag-icon">🇺🇸</span>
+                    </div>
+                </div>
+            </div>
+            <div class="teacher-side">
+                <div class="teacher-price">
+                    $15
+                    <span>/ 小时</span>
+                </div>
                 <div class="teacher-actions">
                     <button class="btn-primary">预约试听</button>
                     <button class="btn-secondary">发送消息</button>

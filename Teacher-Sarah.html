@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sarah · 语言交换语伴资料 | LanguageExchange</title>
+    <style>
+        :root {
+            --brand: #FF6347;
+            --brand-soft: #fff1ec;
+            --text-main: #111827;
+            --text-muted: #6b7280;
+            --bg-page: #f3f4f6;
+            --border-subtle: #e5e7eb;
+            --success: #22c55e;
+            --danger: #ef4444;
+            --star: #fbbf24;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+            background: var(--bg-page);
+            color: var(--text-main);
+        }
+
+        .page {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 16px 16px 40px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 12px;
+        }
+
+        .back-link:hover {
+            color: var(--brand);
+        }
+
+        .back-link-icon {
+            font-size: 18px;
+            line-height: 1;
+        }
+
+        .header-row {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        @media (min-width: 768px) {
+            .header-row {
+                flex-direction: row;
+                align-items: flex-start;
+            }
+        }
+
+        /* 顶部图片墙：X 形布局 */
+        .photo-wall {
+            flex: 1.2;
+            background: #0f172a;
+            border-radius: 20px;
+            padding: 18px;
+            position: relative;
+            overflow: hidden;
+            min-height: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .photo-wall::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at top left, rgba(248, 113, 113, 0.25), transparent 55%),
+                        radial-gradient(circle at bottom right, rgba(59, 130, 246, 0.25), transparent 55%);
+            opacity: 0.9;
+            pointer-events: none;
+        }
+
+        .photo-grid-x {
+            position: relative;
+            width: 100%;
+            max-width: 320px;
+            aspect-ratio: 1 / 1;
+        }
+
+        .photo-tile {
+            position: absolute;
+            width: 44%;
+            aspect-ratio: 1 / 1;
+            border-radius: 16px;
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45);
+        }
+
+        /* X 形：左上→右下 + 右上→左下 */
+        .photo-tile:nth-child(1) {
+            top: 4%;
+            left: 4%;
+            transform: rotate(-10deg);
+            background-image: url("https://picsum.photos/seed/sarah1/400/400");
+        }
+
+        .photo-tile:nth-child(2) {
+            top: 28%;
+            left: 28%;
+            transform: rotate(5deg);
+            background-image: url("https://picsum.photos/seed/sarah2/400/400");
+            z-index: 2;
+        }
+
+        .photo-tile:nth-child(3) {
+            bottom: 4%;
+            right: 4%;
+            transform: rotate(12deg);
+            background-image: url("https://picsum.photos/seed/sarah3/400/400");
+        }
+
+        .photo-tile:nth-child(4) {
+            top: 4%;
+            right: 4%;
+            transform: rotate(8deg);
+            background-image: url("https://picsum.photos/seed/sarah4/400/400");
+        }
+
+        .photo-tile:nth-child(5) {
+            bottom: 4%;
+            left: 4%;
+            transform: rotate(-6deg);
+            background-image: url("https://picsum.photos/seed/sarah5/400/400");
+        }
+
+        .photo-wall-label {
+            position: absolute;
+            bottom: 14px;
+            left: 18px;
+            padding: 4px 10px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            border-radius: 999px;
+            color: #e5e7eb;
+            border: 1px solid rgba(148, 163, 184, 0.5);
+            background: linear-gradient(90deg, rgba(15, 23, 42, 0.9), rgba(30, 64, 175, 0.9));
+            backdrop-filter: blur(12px);
+        }
+
+        .photo-wall-sticker {
+            position: absolute;
+            font-size: 20px;
+            filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.35));
+            opacity: 0.92;
+            animation: floatSticker 6s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+
+        .photo-wall-sticker.sticker-top {
+            top: 10%;
+            right: 12%;
+        }
+
+        .photo-wall-sticker.sticker-bottom {
+            bottom: 10%;
+            left: 12%;
+            animation-delay: 1.5s;
+        }
+
+        @keyframes floatSticker {
+            0% {
+                transform: translateY(0) rotate(-4deg);
+            }
+            50% {
+                transform: translateY(-6px) rotate(2deg);
+            }
+            100% {
+                transform: translateY(4px) rotate(-2deg);
+            }
+        }
+
+        /* 右侧：头像 + 信息 + 等级 */
+        .profile-main {
+            flex: 1;
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 20px 20px 18px;
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .profile-top {
+            display: flex;
+            gap: 16px;
+        }
+
+        .avatar {
+            width: 82px;
+            height: 82px;
+            border-radius: 999px;
+            overflow: hidden;
+            flex-shrink: 0;
+            border: 3px solid var(--brand-soft);
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.12);
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-text {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex: 1;
+        }
+
+        .profile-name-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .profile-name {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .profile-lang {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .profile-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 4px;
+        }
+
+        .tag-pill {
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 999px;
+            border: 1px solid rgba(148, 163, 184, 0.5);
+            color: #4b5563;
+            background: #f9fafb;
+        }
+
+        .tag-level {
+            border: none;
+            background: linear-gradient(135deg, #fed7aa, #fecaca);
+            color: var(--brand);
+            font-weight: 800;
+            box-shadow: 0 0 0 1px rgba(248, 113, 113, 0.7), 0 10px 22px rgba(248, 113, 113, 0.45);
+            font-size: 12px;
+            padding: 4px 12px;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+        }
+
+        .profile-intro {
+            font-size: 13px;
+            line-height: 1.4;
+            color: var(--text-muted);
+        }
+
+        .profile-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 4px;
+        }
+
+        .profile-fun-stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 2px;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .profile-fun-stats span {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 8px;
+            border-radius: 999px;
+            background: #f3f4ff;
+        }
+
+        .badge {
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: #eff6ff;
+            color: #1d4ed8;
+        }
+
+        .badge i {
+            font-style: normal;
+        }
+
+        /* 预约按钮 & 联系按钮 */
+        .actions-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 4px;
+            justify-content: flex-end;
+        }
+
+        .meta-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-top: 2px;
+        }
+
+        .icon-btn {
+            border-radius: 999px;
+            padding: 5px 10px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            border: 1px solid var(--border-subtle);
+            background: #ffffff;
+            color: #6b7280;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: transform 0.12s ease-out, background 0.12s ease-out, box-shadow 0.12s ease-out;
+        }
+
+        .icon-btn:hover {
+            background: #f9fafb;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 16px rgba(15, 23, 42, 0.08);
+        }
+
+        .btn-primary {
+            border: none;
+            outline: none;
+            border-radius: 999px;
+            padding: 11px 26px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            background: linear-gradient(135deg, #ff7b5c, #ff996f);
+            color: #ffffff;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 14px 24px rgba(248, 113, 113, 0.55);
+            transition: transform 0.14s ease-out, box-shadow 0.14s ease-out, filter 0.14s ease-out;
+        }
+
+        .btn-primary:hover {
+            filter: brightness(1.06);
+            transform: translateY(-2px) scale(1.04);
+            box-shadow: 0 18px 30px rgba(248, 113, 113, 0.65);
+        }
+
+        .btn-secondary {
+            border-radius: 999px;
+            padding: 9px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: 1px solid var(--border-subtle);
+            background: #ffffff;
+            color: #374151;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: transform 0.12s ease-out, background 0.12s ease-out;
+        }
+
+        .btn-secondary:hover {
+            background: #f9fafb;
+            transform: translateY(-1px);
+        }
+
+        /* 可用时间表 */
+        .section {
+            margin-top: 24px;
+        }
+
+        .section-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 8px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .section-subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .availability-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 14px 14px 10px;
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
+        }
+
+        .availability-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .availability-month {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .availability-legend {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .legend-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 4px;
+            background: #d1d5db;
+        }
+
+        .legend-dot.available {
+            background: var(--success);
+        }
+
+        .availability-grid {
+            display: grid;
+            grid-template-columns: repeat(7, minmax(0, 1fr));
+            gap: 4px;
+            font-size: 11px;
+        }
+
+        .day-header {
+            text-align: center;
+            padding-bottom: 4px;
+            color: var(--text-muted);
+        }
+
+        .day-header strong {
+            display: block;
+            font-size: 11px;
+            color: #111827;
+        }
+
+        .day-column {
+            border-radius: 10px;
+            background: #f9fafb;
+            padding: 4px 4px 6px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .time-slot {
+            border-radius: 6px;
+            padding: 4px 3px;
+            text-align: center;
+            border: 1px solid transparent;
+            color: #9ca3af;
+        }
+
+        .time-slot.available {
+            background: #ecfdf5;
+            border-color: rgba(34, 197, 94, 0.45);
+            color: #15803d;
+            font-weight: 500;
+        }
+
+        .time-slot.highlight {
+            background: #bbf7d0;
+            border-color: #22c55e;
+            color: #166534;
+            box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.3);
+        }
+
+        /* 评分与评价 */
+        .rating-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 16px 16px 14px;
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
+        }
+
+        .rating-summary {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 14px;
+        }
+
+        .rating-score {
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .rating-stars {
+            display: flex;
+            gap: 3px;
+            font-size: 16px;
+            color: var(--star);
+        }
+
+        .rating-stars span {
+            display: inline-block;
+            transform-origin: center;
+            transition: transform 0.12s ease-out;
+        }
+
+        .rating-card:hover .rating-stars span {
+            transform: translateY(-1px) scale(1.06);
+        }
+
+        .rating-count {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .rating-breakdown {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .reviews-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .review-item {
+            padding-top: 8px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 4px;
+        }
+
+        .reviewer-name {
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .review-meta {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .review-text {
+            font-size: 13px;
+            color: #374151;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <a href="English.html" class="back-link">
+            <span class="back-link-icon">←</span>
+            返回语伴列表
+        </a>
+
+        <div class="header-row">
+            <!-- 顶部图片墙（X 形图片布局） -->
+            <section class="photo-wall" aria-label="Sarah 的语言交换瞬间">
+                <div class="photo-grid-x">
+                    <div class="photo-tile"></div>
+                    <div class="photo-tile"></div>
+                    <div class="photo-tile"></div>
+                    <div class="photo-tile"></div>
+                    <div class="photo-tile"></div>
+                </div>
+                <div class="photo-wall-label">课堂瞬间 · 语言交换 · Travel</div>
+                <div class="photo-wall-sticker sticker-top">🎧</div>
+                <div class="photo-wall-sticker sticker-bottom">✨</div>
+            </section>
+
+            <!-- 头像 + 个人信息 + 等级 + 按钮 -->
+            <section class="profile-main">
+                <div class="profile-top">
+                    <div class="avatar">
+                        <img src="https://picsum.photos/seed/sarah-avatar/300/300" alt="Sarah 的头像">
+                    </div>
+                    <div class="profile-text">
+                        <div class="profile-name-row">
+                            <div>
+                                <div class="profile-name">Sarah Williams</div>
+                                <div class="profile-lang">母语英语 · 想和你互换中文 / 意大利语</div>
+                            </div>
+                        </div>
+
+                        <div class="profile-tags">
+                            <span class="tag-pill tag-level"> Level 4</span>
+                           
+                        </div>
+
+                        <p class="profile-intro">
+                            来自伦敦的英语母语者，现在在学习中文和意大利语。
+                            她希望用「你帮我练中文 / 意大利语，我帮你练英语」的方式做真正的语言交换，
+                            一起聊日常、聊工作、聊兴趣，而不是传统意义上的「老师—学生」关系。
+                        </p>
+
+                        
+                    </div>
+                </div>
+
+
+                <div class="actions-row">
+                    <button class="btn-primary">
+                        🚀 发起语言交换
+                    </button>
+                    <button class="btn-secondary">
+                        联系
+                    </button>
+                        <button class="icon-btn" type="button">
+                        🔖 收藏
+                    </button>
+                    <button class="icon-btn" type="button">
+                        🔗 分享
+                    </button>
+                </div>
+            </section>
+        </div>
+
+        <!-- 有空时间（类似 Apple 日历） -->
+        <section class="section" aria-label="Sarah 的可用时间">
+            <div class="section-title-row">
+                <div class="section-title">有空时间 🎮</div>
+                <div class="section-subtitle">时区：自动根据你的系统时间显示 · 绿色时间段为你和语伴都大概率在线的时段</div>
+            </div>
+
+            <div class="availability-card">
+                <div class="availability-header">
+                    <div class="availability-month">本周 · 示例时间表</div>
+                    <div class="availability-legend">
+                        <span class="legend-item">
+                            <span class="legend-dot"></span> 忙碌
+                        </span>
+                        <span class="legend-item">
+                            <span class="legend-dot available"></span> 有空时间
+                        </span>
+                    </div>
+                </div>
+
+                <div class="availability-grid">
+                    <!-- 星期标题 -->
+                    <div class="day-header">
+                        <strong>一</strong>
+                        10
+                    </div>
+                    <div class="day-header">
+                        <strong>二</strong>
+                        11
+                    </div>
+                    <div class="day-header">
+                        <strong>三</strong>
+                        12
+                    </div>
+                    <div class="day-header">
+                        <strong>四</strong>
+                        13
+                    </div>
+                    <div class="day-header">
+                        <strong>五</strong>
+                        14
+                    </div>
+                    <div class="day-header">
+                        <strong>六</strong>
+                        15
+                    </div>
+                    <div class="day-header">
+                        <strong>日</strong>
+                        16
+                    </div>
+
+                    <!-- 周一 -->
+                    <div class="day-column">
+                        <div class="time-slot">—</div>
+                        <div class="time-slot available">19:00</div>
+                        <div class="time-slot">—</div>
+                    </div>
+
+                    <!-- 周二 -->
+                    <div class="day-column">
+                        <div class="time-slot">—</div>
+                        <div class="time-slot available highlight">20:00</div>
+                        <div class="time-slot available">21:00</div>
+                    </div>
+
+                    <!-- 周三 -->
+                    <div class="day-column">
+                        <div class="time-slot available">09:00</div>
+                        <div class="time-slot">—</div>
+                        <div class="time-slot available">18:30</div>
+                    </div>
+
+                    <!-- 周四 -->
+                    <div class="day-column">
+                        <div class="time-slot">—</div>
+                        <div class="time-slot">—</div>
+                        <div class="time-slot available">20:30</div>
+                    </div>
+
+                    <!-- 周五 -->
+                    <div class="day-column">
+                        <div class="time-slot available">08:30</div>
+                        <div class="time-slot available">09:30</div>
+                        <div class="time-slot">—</div>
+                    </div>
+
+                    <!-- 周六 -->
+                    <div class="day-column">
+                        <div class="time-slot available">10:00</div>
+                        <div class="time-slot available highlight">11:00</div>
+                        <div class="time-slot available">14:00</div>
+                    </div>
+
+                    <!-- 周日 -->
+                    <div class="day-column">
+                        <div class="time-slot">—</div>
+                        <div class="time-slot available">16:00</div>
+                        <div class="time-slot available">17:30</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 评分 & 评价 -->
+        <section class="section" aria-label="评分与学员评价">
+            <div class="section-title-row">
+                <div class="section-title">评分与评价 ⭐</div>
+                <div class="section-subtitle">来自最近 6 个月语伴互评 · 双方可以给对方打分和留言</div>
+            </div>
+
+            <div class="rating-card">
+                <div class="rating-summary">
+                    <div>
+                        <div class="rating-score">4.9</div>
+                        <div class="rating-stars">
+                            <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="rating-count">共 128 条评价</div>
+                        <div class="rating-breakdown">
+                            · 课程氛围轻松 · 反馈具体<br>
+                            · 作业点评细致 · 对考试/面试很有帮助
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reviews-list">
+                    <article class="review-item">
+                        <div class="review-header">
+                            <div class="reviewer-name">Li Ming</div>
+                            <div class="review-meta">中国 · 雅思口语备考 · ★★★★★</div>
+                        </div>
+                        <p class="review-text">
+                            我帮 Sarah 练中文，她帮我练英语，我们会轮流用两种语言聊天。
+                            她会温柔地纠正我的表达，我也会帮她改中文句子，感觉像是跨国好朋友而不是老师。
+                        </p>
+                    </article>
+
+                    <article class="review-item">
+                        <div class="review-header">
+                            <div class="reviewer-name">Giulia</div>
+                            <div class="review-meta">意大利 · 商务英语 · ★★★★★</div>
+                        </div>
+                        <p class="review-text">
+                            我主要帮她练一点基础意大利语，她帮我提升英语口语自信。
+                            有时候我们会先用意大利语描述一件事，再一起换成英语说一遍，节奏很轻松。
+                        </p>
+                    </article>
+
+                    <article class="review-item">
+                        <div class="review-header">
+                            <div class="reviewer-name">Kenji</div>
+                            <div class="review-meta">日本 · 日常会话 · ★★★★☆</div>
+                        </div>
+                        <p class="review-text">
+                            氛围非常轻松，我们经常从动漫聊到旅行，再顺便练习日语、英语和一点点中文。
+                            如果哪一方比较累，就会多用母语聊一会儿，互相照顾，很像真实生活中的语伴。
+                        </p>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

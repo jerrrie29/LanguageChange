@@ -329,10 +329,10 @@
         /* 预约按钮 & 联系按钮 */
         .actions-row {
             display: flex;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             gap: 10px;
             margin-top: 4px;
-            justify-content: flex-end;
+            align-items: center;
         }
 
         .meta-actions {
@@ -406,6 +406,17 @@
             transform: translateY(-1px);
         }
 
+        .fav-btn {
+            font-size: 18px;
+            padding-left: 18px;
+            padding-right: 18px;
+        }
+
+        .fav-btn.favorited {
+            background: #fef2f2;
+            border-color: #fecaca;
+        }
+
         /* 可用时间表 */
         .section {
             margin-top: 24px;
@@ -475,21 +486,46 @@
 
         .availability-grid {
             display: grid;
-            grid-template-columns: repeat(7, minmax(0, 1fr));
-            gap: 4px;
-            font-size: 11px;
+            grid-template-columns: 70px repeat(7, minmax(0, 1fr));
+            column-gap: 4px;
+            row-gap: 4px;
+            font-size: 12px;
+            align-items: stretch;
         }
 
         .day-header {
             text-align: center;
-            padding-bottom: 4px;
-            color: var(--text-muted);
+            padding: 4px 0 6px;
+            color: #4b5563;
+            font-size: 12px;
         }
 
-        .day-header strong {
+        .day-header span {
             display: block;
             font-size: 11px;
-            color: #111827;
+            color: #9ca3af;
+        }
+
+        .time-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-align: right;
+            padding-right: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .availability-cell {
+            min-height: 32px;
+            border-radius: 4px;
+            border: 1px solid transparent;
+            background: #ffffff;
+        }
+
+        .availability-cell.available {
+            background: #a3d977;
+            border-color: #94c843;
         }
 
         .day-column {
@@ -498,7 +534,7 @@
             padding: 4px 4px 6px;
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 4px; 
         }
 
         .time-slot {
@@ -521,6 +557,19 @@
             border-color: #22c55e;
             color: #166534;
             box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.3);
+        }
+
+        .availability-cta {
+            margin-top: 12px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .availability-cta .btn-primary {
+            margin: 20px;
+            width: 100%;
+            max-width: 260px;
+            justify-content: center;
         }
 
         /* 评分与评价 */
@@ -660,16 +709,16 @@
 
                 <div class="actions-row">
                     <button class="btn-primary">
-                        🚀 发起语言交换
+                        🚀语言交换
                     </button>
-                    <button class="btn-secondary">
+                    <button class="btn-secondary contact-btn">
                         联系
                     </button>
-                        <button class="icon-btn" type="button">
-                        🔖 收藏
+                    <button class="btn-secondary fav-btn" type="button">
+                        🤍
                     </button>
-                    <button class="icon-btn" type="button">
-                        🔗 分享
+                    <button class="btn-secondary">
+                        分享
                     </button>
                 </div>
             </section>
@@ -679,12 +728,12 @@
         <section class="section" aria-label="Sarah 的可用时间">
             <div class="section-title-row">
                 <div class="section-title">有空时间 🎮</div>
-                <div class="section-subtitle">时区：自动根据你的系统时间显示 · 绿色时间段为你和语伴都大概率在线的时段</div>
+                <div class="section-subtitle">时区：自动根据你的系统时间显示</div>
             </div>
 
             <div class="availability-card">
                 <div class="availability-header">
-                    <div class="availability-month">本周 · 示例时间表</div>
+                    <div class="availability-month">接下来 7 天 · 示例时间表</div>
                     <div class="availability-legend">
                         <span class="legend-item">
                             <span class="legend-dot"></span> 忙碌
@@ -696,84 +745,80 @@
                 </div>
 
                 <div class="availability-grid">
-                    <!-- 星期标题 -->
-                    <div class="day-header">
-                        <strong>一</strong>
-                        10
-                    </div>
-                    <div class="day-header">
-                        <strong>二</strong>
-                        11
-                    </div>
-                    <div class="day-header">
-                        <strong>三</strong>
-                        12
-                    </div>
-                    <div class="day-header">
-                        <strong>四</strong>
-                        13
-                    </div>
-                    <div class="day-header">
-                        <strong>五</strong>
-                        14
-                    </div>
-                    <div class="day-header">
-                        <strong>六</strong>
-                        15
-                    </div>
-                    <div class="day-header">
-                        <strong>日</strong>
-                        16
-                    </div>
+                    <!-- 顶部：空白 + 每天的标题 -->
+                    <div></div>
+                    <div class="day-header">Thu<br><span>27</span></div>
+                    <div class="day-header">Fri<br><span>28</span></div>
+                    <div class="day-header">Sat<br><span>29</span></div>
+                    <div class="day-header">Sun<br><span>30</span></div>
+                    <div class="day-header">Mon<br><span>1</span></div>
+                    <div class="day-header">Tue<br><span>2</span></div>
+                    <div class="day-header">Wed<br><span>3</span></div>
 
-                    <!-- 周一 -->
-                    <div class="day-column">
-                        <div class="time-slot">—</div>
-                        <div class="time-slot available">19:00</div>
-                        <div class="time-slot">—</div>
-                    </div>
+                    <!-- 00 - 04 行 -->
+                    <div class="time-label">00 - 04</div>
+                    <div class="availability-cell"></div>
+                    <div class="availability-cell"></div>
+                    <div class="availability-cell available"></div>
+                    <div class="availability-cell available"></div>
+                    <div class="availability-cell"></div>
+                    <div class="availability-cell available"></div>
+                    <div class="availability-cell available"></div>
 
-                    <!-- 周二 -->
-                    <div class="day-column">
-                        <div class="time-slot">—</div>
-                        <div class="time-slot available highlight">20:00</div>
-                        <div class="time-slot available">21:00</div>
-                    </div>
+                    <!-- 04 - 08 行 -->
+                    <div class="time-label">04 - 08</div>
+                    <div class="availability-cell"></div>
+                    <div class="availability-cell"></div>
+                    <div class="availability-cell available"></div>
+                    <div class="availability-cell available"></div>
+                    <div class="availability-cell available"></div>
+                    <div class="availability-cell"></div>
+                    <div class="availability-cell available"></div>
 
-                    <!-- 周三 -->
-                    <div class="day-column">
-                        <div class="time-slot available">09:00</div>
-                        <div class="time-slot">—</div>
-                        <div class="time-slot available">18:30</div>
-                    </div>
+                    <!-- 08 - 12 行 -->
+                    <div class="time-label">08 - 12</div>
+                    <div class="availability-cell"></div>
+                    <div class="availability-cell"></div>
+                    <div class="availability-cell"></div>
+                    <div class="availability-cell"></div>
+                    <div class="availability-cell"></div>
+                    <div class="availability-cell"></div>
+                    <div class="availability-cell"></div>
 
-                    <!-- 周四 -->
-                    <div class="day-column">
-                        <div class="time-slot">—</div>
-                        <div class="time-slot">—</div>
-                        <div class="time-slot available">20:30</div>
-                    </div>
+                    <!-- 12 - 16 行 -->
+                    <div class="time-label">12 - 16</div>
+                    <div class="availability-cell"></div>
+                    <div class="availability-cell"></div>
+                    <div class="availability-cell"></div>
+                    <div class="availability-cell"></div>
+                    <div class="availability-cell"></div>
+                    <div class="availability-cell"></div>
+                    <div class="availability-cell"></div>
 
-                    <!-- 周五 -->
-                    <div class="day-column">
-                        <div class="time-slot available">08:30</div>
-                        <div class="time-slot available">09:30</div>
-                        <div class="time-slot">—</div>
-                    </div>
+                    <!-- 16 - 20 行 -->
+                    <div class="time-label">16 - 20</div>
+                    <div class="availability-cell"></div>
+                    <div class="availability-cell available"></div>
+                    <div class="availability-cell available"></div>
+                    <div class="availability-cell"></div>
+                    <div class="availability-cell available"></div>
+                    <div class="availability-cell available"></div>
+                    <div class="availability-cell available"></div>
 
-                    <!-- 周六 -->
-                    <div class="day-column">
-                        <div class="time-slot available">10:00</div>
-                        <div class="time-slot available highlight">11:00</div>
-                        <div class="time-slot available">14:00</div>
-                    </div>
-
-                    <!-- 周日 -->
-                    <div class="day-column">
-                        <div class="time-slot">—</div>
-                        <div class="time-slot available">16:00</div>
-                        <div class="time-slot available">17:30</div>
-                    </div>
+                    <!-- 20 - 24 行 -->
+                    <div class="time-label">20 - 24</div>
+                    <div class="availability-cell"></div>
+                    <div class="availability-cell available"></div>
+                    <div class="availability-cell"></div>
+                    <div class="availability-cell"></div>
+                    <div class="availability-cell available"></div>
+                    <div class="availability-cell available"></div>
+                    <div class="availability-cell available"></div>
+                </div>
+                <div class="availability-cta">
+                    <button class="btn-primary" type="button">
+                        🚀 发起语言交换
+                    </button>
                 </div>
             </div>
         </section>
@@ -840,4 +885,31 @@
         </section>
     </div>
 </body>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var favBtn = document.querySelector('.fav-btn');
+            if (favBtn) {
+                favBtn.addEventListener('click', function () {
+                    var isFavorited = favBtn.classList.toggle('favorited');
+                    favBtn.textContent = isFavorited ? '❤️' : '🤍';
+                });
+            }
+
+            // Primary button → go to time selection page
+            var primaryBtns = document.querySelectorAll('.btn-primary');
+            primaryBtns.forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    window.location.href = "TimeSelect.html";
+                });
+            });
+
+            // Contact button → go to user chat area
+            var contactBtn = document.querySelector('.contact-btn');
+            if (contactBtn) {
+                contactBtn.addEventListener('click', function () {
+                    window.location.href = "Chat.html";
+                });
+            }
+        });
+    </script>
 </html>

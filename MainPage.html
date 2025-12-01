@@ -201,13 +201,43 @@
     }
 
     .hero input {
-      padding: 12px 18px;
-      width: 60%;
-      max-width: 550px;
+      padding: 12px 48px 12px 18px; /* 右侧留出空间放圆形按钮 */
+      width: 100%;
       border-radius: 30px;
       border: none;
       font-size: 16px;
+      box-sizing: border-box;
+    }
+
+    .hero-search {
+      position: relative;
+      width: 45%;
+      max-width: 420px;
       margin-top: 10px;
+    }
+
+    .hero-search-btn {
+      position: absolute;
+      right: 6px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      background-color: #ffffff;
+      color: #FF6347;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      padding: 0;
+    }
+
+    .hero-search-btn:hover {
+      background-color: #ffe6df;
     }
 
     /* --- Category Section --- */
@@ -350,7 +380,10 @@
   <!-- Hero -->
   <div class="hero">
     <h1 id="heroTitle">Find the language partner worldwide</h1>
-    <input id="heroSearchInput" type="text" placeholder="Try: English, Arabic, Spanish..." />
+    <div class="hero-search">
+      <input id="heroSearchInput" type="text" placeholder="Try: English, Arabic, Spanish..." />
+      <button class="hero-search-btn" type="button">→</button>
+    </div>
   </div>
 
   <!-- Categories -->
@@ -378,12 +411,12 @@
         heroTitle: 'Find the language partner worldwide',
         popularCategoriesTitle: 'Popular Categories',
         howItWorksTitle: 'How It Works',
-        step1Title: '1. Find a Tutor',
-        step1Text: 'Browse thousands of verified tutors.',
+        step1Title: '1. Get credits',
+        step1Text: 'Get credits by teaching your language or buying them.',
         step2Title: '2. Book a Lesson',
-        step2Text: 'Select your preferred time and price.',
+        step2Text: 'Select your preferred time using credits.',
         step3Title: '3. Start Learning',
-        step3Text: 'Improve your language skills with live lessons.',
+        step3Text: 'Explore the multilingual world.',
         footerText: '© 2025 LanguageExchange — Learn Anywhere, Anytime.',
         searchPlaceholder: 'Try: English, Arabic, Spanish...',
         sideMenuTitle: 'Menu',
@@ -407,12 +440,12 @@
         heroTitle: '在全球找到你的语伴',
         popularCategoriesTitle: '热门类别',
         howItWorksTitle: '使用方式',
-        step1Title: '1. 找到导师',
-        step1Text: '浏览成千上万名认证导师。',
-        step2Title: '2. 预约课程',
-        step2Text: '选择你喜欢的时间和价格。',
+        step1Title: '1. 获取积分',
+        step1Text: '通过教授你的母语或付费来获得积分。',
+        step2Title: '2. 使用积分预约课程',
+        step2Text: '用积分选择你偏好的上课时间。',
         step3Title: '3. 开始学习',
-        step3Text: '通过实时课程提升你的语言能力。',
+        step3Text: '走进多语言的世界。',
         footerText: '© 2025 LanguageExchange — 随时随地学习。',
         searchPlaceholder: '试试：英语、阿拉伯语、西班牙语……',
         sideMenuTitle: '菜单',
@@ -436,12 +469,12 @@
         heroTitle: 'Encuentra compañeros de idioma en todo el mundo',
         popularCategoriesTitle: 'Categorías populares',
         howItWorksTitle: 'Cómo funciona',
-        step1Title: '1. Encuentra un tutor',
-        step1Text: 'Explora miles de tutores verificados.',
+        step1Title: '1. Consigue créditos',
+        step1Text: 'Obtén créditos enseñando tu idioma o comprándolos.',
         step2Title: '2. Reserva una clase',
-        step2Text: 'Elige tu horario y precio preferidos.',
+        step2Text: 'Elige tu horario preferido usando créditos.',
         step3Title: '3. Empieza a aprender',
-        step3Text: 'Mejora tu idioma con clases en vivo.',
+        step3Text: 'Explora un mundo multilingüe.',
         footerText: '© 2025 LanguageExchange — Aprende en cualquier momento y lugar.',
         searchPlaceholder: 'Prueba: inglés, árabe, español…',
         sideMenuTitle: 'Menú',
@@ -465,12 +498,12 @@
         heroTitle: 'اعثر على شريكك اللغوي حول العالم',
         popularCategoriesTitle: 'الفئات الشائعة',
         howItWorksTitle: 'كيفية الاستخدام',
-        step1Title: '1. ابحث عن مدرس',
-        step1Text: 'تصفَّح آلاف المدرّسين المعتمدين.',
+        step1Title: '1. احصل على أرصدة',
+        step1Text: 'احصل على الأرصدة إمّا بتدريس لغتك أو بشرائها.',
         step2Title: '2. احجز درسًا',
-        step2Text: 'اختر الوقت والسعر المناسبين لك.',
+        step2Text: 'اختر الوقت المناسب لك باستخدام الأرصدة.',
         step3Title: '3. ابدأ التعلّم',
-        step3Text: 'طوِّر مهاراتك اللغوية من خلال دروس مباشرة.',
+        step3Text: 'استكشف عالماً متعدد اللغات.',
         footerText: '© 2025 ‏LanguageExchange — تعلّم في أي وقت ومن أي مكان.',
         searchPlaceholder: 'جرّب: الإنجليزية، العربية، الإسبانية…',
         sideMenuTitle: 'القائمة',
@@ -494,12 +527,12 @@
         heroTitle: 'Trouvez votre partenaire de langue partout dans le monde',
         popularCategoriesTitle: 'Catégories populaires',
         howItWorksTitle: 'Comment ça marche',
-        step1Title: '1. Trouver un tuteur',
-        step1Text: 'Parcourez des milliers de tuteurs vérifiés.',
-        step2Title: '2. Réserver un cours',
-        step2Text: 'Choisissez votre horaire et votre tarif préférés.',
-        step3Title: '3. Commencer à apprendre',
-        step3Text: 'Améliorez votre niveau de langue avec des cours en direct.',
+        step1Title: '1. Obtenez des crédits',
+        step1Text: 'Obtenez des crédits en enseignant votre langue ou en les achetant.',
+        step2Title: '2. Réservez un cours',
+        step2Text: 'Choisissez l’horaire qui vous convient en utilisant vos crédits.',
+        step3Title: '3. Commencez à apprendre',
+        step3Text: 'Explorez un monde multilingue.',
         footerText: '© 2025 LanguageExchange — Apprenez où vous voulez, quand vous voulez.',
         searchPlaceholder: 'Essayez : anglais, arabe, espagnol…',
         sideMenuTitle: 'Menu',
@@ -661,8 +694,8 @@
 
     <div class="steps-container">
       <div class="step-card">
-        <h3 id="step1Title">1. Find a Tutor</h3>
-        <p id="step1Text">Browse thousands of verified tutors.</p>
+        <h3 id="step1Title">1. Earn by yourself or pay something</h3>
+        <p id="step1Text">contribute this community either by teaching your own language or support your teacher.</p>
       </div>
 
       <div class="step-card">

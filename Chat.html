@@ -360,15 +360,31 @@
     <div class="chat-app">
         <aside class="sidebar">
             <div class="sidebar-top">
-                <button class="nav-icon">☰</button>
+                <button class="nav-icon">🏠</button>
             </div>
             <div class="sidebar-contacts">
-                <div class="contact-avatar active" style="background-image:url('https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;w=80');">
+                <div class="contact-avatar active"
+                     data-name="Anna"
+                     data-status="Online · Russian teacher · Saint Petersburg"
+                     data-avatar="https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;w=80"
+                     style="background-image:url('https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;w=80');">
                     <span class="status-dot online"></span>
                 </div>
-                <div class="contact-avatar" style="background-image:url('https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;w=80');"></div>
-                <div class="contact-avatar" style="background-image:url('https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;w=80');"></div>
-                <div class="contact-avatar" style="background-image:url('https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;w=80');"></div>
+                <div class="contact-avatar"
+                     data-name="Maria"
+                     data-status="Online · Spanish teacher · Barcelona"
+                     data-avatar="https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;w=80"
+                     style="background-image:url('https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;w=80');"></div>
+                <div class="contact-avatar"
+                     data-name="Alex"
+                     data-status="Online · English teacher · London"
+                     data-avatar="https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;w=80"
+                     style="background-image:url('https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;w=80');"></div>
+                <div class="contact-avatar"
+                     data-name="Julia"
+                     data-status="Online · German teacher · Berlin"
+                     data-avatar="https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;w=80"
+                     style="background-image:url('https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;w=80');"></div>
             </div>
             <div class="sidebar-bottom">
                 <button class="sidebar-icon active">💬</button>
@@ -422,5 +438,83 @@
             </footer>
         </main>
     </div>
+</script>
+<script>
+    const teacherAvatarImg = document.querySelector('.teacher-avatar img');
+    const teacherNameEl = document.querySelector('.teacher-name');
+    const teacherStatusEl = document.querySelector('.teacher-status');
+    const primaryCtaBtn = document.querySelector('.primary-cta');
+
+    const input = document.querySelector('.chat-input');
+    const sendBtn = document.querySelector('.send-btn');
+    const avatars = document.querySelectorAll('.contact-avatar');
+    const chatBody = document.querySelector('.chat-body');
+
+    const homeBtn = document.querySelector('.nav-icon');
+    homeBtn.addEventListener('click', () => {
+        window.location.href = 'MainPage.html';
+    });
+
+    avatars.forEach((avatar) => {
+        avatar.addEventListener('click', () => {
+            avatars.forEach(a => a.classList.remove('active'));
+            avatar.classList.add('active');
+
+            const name = avatar.dataset.name || 'Tutor';
+            const status = avatar.dataset.status || 'Online';
+            const avatarUrl = avatar.dataset.avatar;
+
+            teacherNameEl.textContent = name;
+            teacherStatusEl.textContent = status;
+            if (avatarUrl) {
+                teacherAvatarImg.src = avatarUrl;
+            }
+            // Removed chat switch message creation and appending
+        });
+    });
+
+    function sendMessage() {
+        const text = input.value.trim();
+        if (!text) return;
+
+        // Create message wrapper
+        const msg = document.createElement('div');
+        msg.className = 'message message-outgoing';
+
+        // Create bubble
+        const bubble = document.createElement('div');
+        bubble.className = 'bubble';
+        bubble.textContent = text;
+
+        msg.appendChild(bubble);
+
+        // Insert into chat body
+        chatBody.appendChild(msg);
+
+        // Scroll to bottom
+        chatBody.scrollTop = chatBody.scrollHeight;
+
+        // Clear input
+        input.value = '';
+        input.placeholder = '';
+    }
+
+    // Click arrow button
+    sendBtn.addEventListener('click', sendMessage);
+
+    // Press Enter key
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            sendMessage();
+        }
+    });
+
+    if (primaryCtaBtn) {
+        primaryCtaBtn.addEventListener('click', () => {
+            window.location.href = 'TimeSelect.html';
+        });
+    }
+</script>
 </body>
 </html>

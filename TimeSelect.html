@@ -1,11 +1,551 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Schedule your lessons</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+                "Segoe UI", sans-serif;
+            background: #f7f8fb;
+            color: #1f2933;
+        }
+
+        .page {
+            max-width: 1200px;
+            margin: 24px auto;
+            padding: 0 24px 40px;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .header-title {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: transparent;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        .close-btn {
+            right: 0;
+        }
+
+        .legend {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 999px;
+        }
+
+        .dot.available {
+            background: #7cc043;
+        }
+
+        .dot.unavailable {
+            border: 2px solid #cbd2e1;
+            background: #fff;
+        }
+
+        .dot.booked {
+            background: repeating-linear-gradient(
+                -45deg,
+                #d9dde8,
+                #d9dde8 3px,
+                #eef1f8 3px,
+                #eef1f8 6px
+            );
+        }
+
+        .dot.booked-by-you {
+            background: repeating-linear-gradient(
+                -45deg,
+                #7cc043,
+                #7cc043 3px,
+                #a7d676 3px,
+                #a7d676 6px
+            );
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+            padding: 16px 16px 20px;
+        }
+
+        .toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .timezone {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: #6b7385;
+        }
+
+        .timezone-pill {
+            border-radius: 999px;
+            background: #f3f5fb;
+            padding: 6px 10px;
+            border: 1px solid #e0e5f2;
+        }
+
+        .toolbar-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn {
+            border-radius: 999px;
+            border: none;
+            padding: 8px 18px;
+            font-size: 14px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-outline {
+            background: #fff;
+            border: 1px solid #e0e5f2;
+        }
+
+        .btn-primary {
+            background: #1f73f1;
+            color: #fff;
+        }
+
+        .icon-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 999px;
+            border: 1px solid #e0e5f2;
+            background: #fff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .week-range {
+            font-size: 14px;
+            font-weight: 500;
+            color: #4b5563;
+            min-width: 200px;
+            text-align: center;
+        }
+
+        .schedule-wrapper {
+            margin-top: 4px;
+            overflow-x: auto;
+        }
+
+        .duration-picker {
+            margin-top: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            color: #6b7385;
+        }
+
+        .duration-picker-label {
+            margin-right: 4px;
+        }
+
+        .duration-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .duration-btn {
+            border-radius: 999px;
+            border: 1px solid #e0e5f2;
+            background: #fff;
+            padding: 6px 12px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .duration-btn.active {
+            background: #1f73f1;
+            color: #fff;
+            border-color: #1f73f1;
+        }
+
+        .confirm-btn {
+            border-radius: 999px;
+            border: none;
+            padding: 8px 18px;
+            font-size: 13px;
+            cursor: pointer;
+            background: #1f73f1;
+            color: #fff;
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.25);
+        }
+
+        .schedule-grid {
+            display: grid;
+            grid-auto-rows: 42px;
+            border-collapse: collapse;
+            min-width: 900px;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .time-col {
+            background: #f4f6fb;
+            color: #6b7385;
+            font-size: 12px;
+            text-align: right;
+            padding-right: 12px;
+            border-bottom: 1px solid #e1e5f0;
+            display: flex;
+            align-items: center;
+        }
+
+        .time-header {
+            background: #f4f6fb;
+            border-right: 1px solid #e1e5f0;
+        }
+
+        .day-header {
+            background: #f4f6fb;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: #4b5563;
+            border-left: 1px solid #e1e5f0;
+            border-bottom: 1px solid #e1e5f0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .day-header span.date {
+            font-size: 11px;
+            font-weight: 500;
+            color: #9aa3b8;
+            margin-top: 2px;
+        }
+
+        .slot {
+            border-left: 1px solid #e1e5f0;
+            border-bottom: 1px solid #e1e5f0;
+            cursor: pointer;
+            transition: background 0.08s ease-out, box-shadow 0.08s ease-out;
+        }
+
+        .slot.available {
+            background: #a7d76d;
+        }
+
+        .slot.unavailable {
+            background: repeating-linear-gradient(
+                -45deg,
+                #f0f2f7,
+                #f0f2f7 4px,
+                #dfe3ee 4px,
+                #dfe3ee 8px
+            );
+        }
+
+        .slot.selected {
+            background: repeating-linear-gradient(
+                -45deg,
+                #7cc043,
+                #7cc043 4px,
+                #a7d676 4px,
+                #a7d676 8px
+            );
+            box-shadow: inset 0 0 0 1px rgba(28, 100, 242, 0.5);
+        }
+
+        .slot:hover {
+            box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.18);
+        }
+
+        .time-label {
+            padding-right: 12px;
+        }
+
+        .time-label span {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .page {
+                padding: 12px 12px 24px;
+            }
+
+            .header-title {
+                font-size: 20px;
+            }
+
+            .toolbar {
+                align-items: flex-start;
+            }
+
+            .week-range {
+                text-align: left;
+            }
+        }
+    </style>
 </head>
 <body>
-    
+    <div class="page">
+        <div class="header">
+            <div class="header-title">Schedule your lessons</div>
+            <button class="close-btn" title="Close">✕</button>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item">
+                <span class="dot available"></span>
+                <span>Available</span>
+            </div>
+            <div class="legend-item">
+                <span class="dot unavailable"></span>
+                <span>Not available</span>
+            </div>
+            <div class="legend-item">
+                <span class="dot booked"></span>
+                <span>Booked</span>
+            </div>
+            <div class="legend-item">
+                <span class="dot booked-by-you"></span>
+                <span>Booked by you</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="toolbar">
+                <div class="timezone">
+                    <span class="timezone-pill" id="tz-label">UTC+08:00</span>
+                </div>
+                <div class="toolbar-right">
+                    <button class="btn btn-outline" id="today-btn">
+                        <span>📅</span>
+                        <span>Today</span>
+                    </button>
+                    <button class="icon-btn" id="prev-week" aria-label="Previous week">‹</button>
+                    <div class="week-range" id="week-range">This week</div>
+                    <button class="icon-btn" id="next-week" aria-label="Next week">›</button>
+                </div>
+            </div>
+
+            <div class="schedule-wrapper">
+                <div class="schedule-grid" id="schedule-grid"></div>
+            </div>
+            <div class="duration-picker">
+                <div class="duration-left">
+                    <span class="duration-picker-label">时长:</span>
+                    <button class="duration-btn active" data-minutes="30">30 min</button>
+                    <button class="duration-btn" data-minutes="60">1 hour</button>
+                </div>
+                <button class="confirm-btn">确认</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const grid = document.getElementById('schedule-grid');
+        const weekRangeLabel = document.getElementById('week-range');
+        const todayBtn = document.getElementById('today-btn');
+        const prevWeekBtn = document.getElementById('prev-week');
+        const nextWeekBtn = document.getElementById('next-week');
+        const durationButtons = document.querySelectorAll('.duration-btn');
+        const confirmBtn = document.querySelector('.confirm-btn');
+        const closeBtn = document.querySelector('.close-btn');
+
+        const HOURS_START = 8;  // 起始小时
+        const HOURS_END = 22;   // 结束小时（不含这一小时）
+
+        let currentDuration = 30; // 当前选择的区间长度（分钟），30 或 60
+        let weekOffset = 0; // 0 = 本周，-1 = 上周，1 = 下周
+
+        function getStartOfWeek(baseDate) {
+            const d = new Date(baseDate);
+            const day = d.getDay(); // 0–6, 周日是 0
+            const diff = (day === 0 ? -6 : 1) - day; // 以周一为一周起点
+            d.setDate(d.getDate() + diff);
+            d.setHours(0, 0, 0, 0);
+            return d;
+        }
+
+        function formatWeekRange(start) {
+            const end = new Date(start);
+            end.setDate(end.getDate() + 6);
+
+            const opts = { month: 'short', day: 'numeric' };
+            const startStr = start.toLocaleDateString(undefined, opts);
+            const endStr = end.toLocaleDateString(undefined, opts);
+            const yearStr = end.getFullYear();
+
+            return startStr + ' - ' + endStr + ', ' + yearStr;
+        }
+
+        function weekdayLabel(date) {
+            const weekday = date.toLocaleDateString(undefined, { weekday: 'short' }).toUpperCase();
+            const day = date.getDate();
+            return { weekday, day };
+        }
+
+        function minutesToTime(totalMinutes) {
+            const h = Math.floor(totalMinutes / 60);
+            const m = totalMinutes % 60;
+            const hh = h.toString().padStart(2, '0');
+            const mm = m.toString().padStart(2, '0');
+            return `${hh}:${mm}`;
+        }
+
+        function renderGrid() {
+            grid.innerHTML = '';
+
+            const today = new Date();
+            const base = getStartOfWeek(today);
+            base.setDate(base.getDate() + weekOffset * 7);
+
+            // 一共 7 天
+            const days = [];
+            for (let i = 0; i < 7; i++) {
+                const d = new Date(base);
+                d.setDate(base.getDate() + i);
+                days.push(d);
+            }
+
+            grid.style.gridTemplateColumns = `120px repeat(${days.length}, 1fr)`;
+
+            weekRangeLabel.textContent = formatWeekRange(base);
+
+            const emptyHeader = document.createElement('div');
+            emptyHeader.className = 'time-col time-header';
+            grid.appendChild(emptyHeader);
+
+            days.forEach((d) => {
+                const { weekday, day } = weekdayLabel(d);
+                const cell = document.createElement('div');
+                cell.className = 'day-header';
+                cell.innerHTML = `<div>${weekday}</div><span class="date">${day}</span>`;
+                grid.appendChild(cell);
+            });
+
+            const startMinutes = HOURS_START * 60;
+            const endMinutes = HOURS_END * 60;
+            const stepMinutes = currentDuration === 60 ? 60 : 30;
+
+            // 一小时模式下格子更高一些
+            grid.style.gridAutoRows = currentDuration === 60 ? '60px' : '42px';
+
+            for (let minutes = startMinutes; minutes < endMinutes; minutes += stepMinutes) {
+                const timeCell = document.createElement('div');
+                timeCell.className = 'time-col';
+                const label = document.createElement('div');
+                label.className = 'time-label';
+                label.innerHTML = `<span>${minutesToTime(minutes)}</span>`;
+                timeCell.appendChild(label);
+                grid.appendChild(timeCell);
+
+                days.forEach((d) => {
+                    const slot = document.createElement('div');
+                    slot.className = 'slot available';
+                    slot.dataset.date = d.toISOString().slice(0, 10);
+                    slot.dataset.startMinutes = minutes;
+
+                    slot.addEventListener('click', () => {
+                        // 当前格子表示一个完整的区间（30 分钟或 1 小时），直接切换选中状态
+                        slot.classList.toggle('selected');
+                    });
+
+                    slot.addEventListener('mouseenter', () => {
+                        const startMins = parseInt(slot.dataset.startMinutes, 10);
+                        const endMins = startMins + currentDuration;
+                        slot.title = `${minutesToTime(startMins)} - ${minutesToTime(endMins)}`;
+                    });
+
+                    grid.appendChild(slot);
+                });
+            }
+        }
+
+        todayBtn.addEventListener('click', () => {
+            weekOffset = 0;
+            renderGrid();
+        });
+
+        prevWeekBtn.addEventListener('click', () => {
+            weekOffset -= 1;
+            renderGrid();
+        });
+
+        nextWeekBtn.addEventListener('click', () => {
+            weekOffset += 1;
+            renderGrid();
+        });
+
+        durationButtons.forEach((btn) => {
+            btn.addEventListener('click', () => {
+                durationButtons.forEach((b) => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentDuration = parseInt(btn.dataset.minutes, 10) || 30;
+                // 根据新的时长重新渲染：30 分钟 -> 每半小时一行；60 分钟 -> 每一小时一行且格子更高
+                renderGrid();
+            });
+        });
+
+        confirmBtn.addEventListener('click', () => {
+            // 跳转到支付页面，根据你的实际文件名修改 URL
+            window.location.href = 'Payment.html';
+        });
+        closeBtn.addEventListener('click', () => {
+            window.location.href = 'Teacher-Sarah.html';
+        });
+        renderGrid();
+    </script>
 </body>
 </html>
